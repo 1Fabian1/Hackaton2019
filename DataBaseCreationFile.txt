@@ -1,0 +1,106 @@
+CREATE TABLE `rodzajezgloszen` (
+  `idrodzajezgloszen` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `nazwarodzaju` VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE `statusyzgloszen` (
+  `idstatusyzgloszen` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `nazwastatusu` VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE `uzytkownicy` (
+  `iduzytkownicy` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `nazwawyswietlana` VARCHAR(255) UNIQUE NOT NULL,
+  `email` VARCHAR(255) UNIQUE NOT NULL,
+  `czymoderator` BOOLEAN NOT NULL
+);
+
+CREATE TABLE `danelogowania` (
+  `iddanelogowania` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `emailhaslohash` VARCHAR(255) NOT NULL,
+  `iduzytkownicy` INTEGER UNIQUE NOT NULL
+);
+
+ALTER TABLE `danelogowania` ADD CONSTRAINT `fk_danelogowania__iduzytkownicy` FOREIGN KEY (`iduzytkownicy`) REFERENCES `uzytkownicy` (`iduzytkownicy`);
+
+CREATE TABLE `zgloszenia` (
+  `idzgloszenia` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `nazwazgloszenia` VARCHAR(255) NOT NULL,
+  `idrodzajezgloszen` INTEGER NOT NULL,
+  `opiszgloszenia` VARCHAR(255) NOT NULL,
+  `lokalizacja` VARCHAR(255) NOT NULL,
+  `nazwazdjecia` VARCHAR(255) NOT NULL,
+  `idstatusyzgloszen` INTEGER NOT NULL,
+  `opisstatusu` VARCHAR(255) NOT NULL,
+  `punkty` INTEGER NOT NULL,
+  `czaszgloszenia` DATETIME NOT NULL,
+  `iduzytkownicy` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_zgloszenia__idrodzajezgloszen` ON `zgloszenia` (`idrodzajezgloszen`);
+
+CREATE INDEX `idx_zgloszenia__idstatusyzgloszen` ON `zgloszenia` (`idstatusyzgloszen`);
+
+CREATE INDEX `idx_zgloszenia__iduzytkownicy` ON `zgloszenia` (`iduzytkownicy`);
+
+ALTER TABLE `zgloszenia` ADD CONSTRAINT `fk_zgloszenia__idrodzajezgloszen` FOREIGN KEY (`idrodzajezgloszen`) REFERENCES `rodzajezgloszen` (`idrodzajezgloszen`) ON DELETE CASCADE;
+
+ALTER TABLE `zgloszenia` ADD CONSTRAINT `fk_zgloszenia__idstatusyzgloszen` FOREIGN KEY (`idstatusyzgloszen`) REFERENCES `statusyzgloszen` (`idstatusyzgloszen`) ON DELETE CASCADE;
+
+ALTER TABLE `zgloszenia` ADD CONSTRAINT `fk_zgloszenia__iduzytkownicy` FOREIGN KEY (`iduzytkownicy`) REFERENCES `uzytkownicy` (`iduzytkownicy`) ON DELETE CASCADE;
+
+CREATE TABLE `goracezgloszenia` (
+  `idgoracezgloszenia` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `idzgloszenia` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_goracezgloszenia__idzgloszenia` ON `goracezgloszenia` (`idzgloszenia`);
+
+ALTER TABLE `goracezgloszenia` ADD CONSTRAINT `fk_goracezgloszenia__idzgloszenia` FOREIGN KEY (`idzgloszenia`) REFERENCES `zgloszenia` (`idzgloszenia`) ON DELETE CASCADE;
+
+CREATE TABLE `komentarze` (
+  `idkomentarze` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `tresckomentarza` VARCHAR(255) NOT NULL,
+  `punkty` INTEGER NOT NULL,
+  `czasdodania` DATETIME NOT NULL,
+  `idzgloszenia` INTEGER NOT NULL,
+  `iduzytkownicy` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_komentarze__iduzytkownicy` ON `komentarze` (`iduzytkownicy`);
+
+CREATE INDEX `idx_komentarze__idzgloszenia` ON `komentarze` (`idzgloszenia`);
+
+ALTER TABLE `komentarze` ADD CONSTRAINT `fk_komentarze__iduzytkownicy` FOREIGN KEY (`iduzytkownicy`) REFERENCES `uzytkownicy` (`iduzytkownicy`) ON DELETE CASCADE;
+
+ALTER TABLE `komentarze` ADD CONSTRAINT `fk_komentarze__idzgloszenia` FOREIGN KEY (`idzgloszenia`) REFERENCES `zgloszenia` (`idzgloszenia`) ON DELETE CASCADE;
+
+CREATE TABLE `polubieniakomentarzy` (
+  `idpolubieniakomentarzy` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `czaspolubienia` DATETIME NOT NULL,
+  `iduzytkownicy` INTEGER NOT NULL,
+  `idkomentarze` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_polubieniakomentarzy__idkomentarze` ON `polubieniakomentarzy` (`idkomentarze`);
+
+CREATE INDEX `idx_polubieniakomentarzy__iduzytkownicy` ON `polubieniakomentarzy` (`iduzytkownicy`);
+
+ALTER TABLE `polubieniakomentarzy` ADD CONSTRAINT `fk_polubieniakomentarzy__idkomentarze` FOREIGN KEY (`idkomentarze`) REFERENCES `komentarze` (`idkomentarze`) ON DELETE CASCADE;
+
+ALTER TABLE `polubieniakomentarzy` ADD CONSTRAINT `fk_polubieniakomentarzy__iduzytkownicy` FOREIGN KEY (`iduzytkownicy`) REFERENCES `uzytkownicy` (`iduzytkownicy`) ON DELETE CASCADE;
+
+CREATE TABLE `polubieniazgloszen` (
+  `idpolubieniazgloszen` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `czaspolubienia` VARCHAR(255) NOT NULL,
+  `iduzytkownicy` INTEGER NOT NULL,
+  `idzgloszenia` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_polubieniazgloszen__iduzytkownicy` ON `polubieniazgloszen` (`iduzytkownicy`);
+
+CREATE INDEX `idx_polubieniazgloszen__idzgloszenia` ON `polubieniazgloszen` (`idzgloszenia`);
+
+ALTER TABLE `polubieniazgloszen` ADD CONSTRAINT `fk_polubieniazgloszen__iduzytkownicy` FOREIGN KEY (`iduzytkownicy`) REFERENCES `uzytkownicy` (`iduzytkownicy`) ON DELETE CASCADE;
+
+ALTER TABLE `polubieniazgloszen` ADD CONSTRAINT `fk_polubieniazgloszen__idzgloszenia` FOREIGN KEY (`idzgloszenia`) REFERENCES `zgloszenia` (`idzgloszenia`) ON DELETE CASCADE
