@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Context>
 
-
     <Resource
-            name="jdbc/spis"xxxxxxxx
+            name="jdbc/hackaton"
             auth="Container"
             type="javax.sql.DataSource"
             initialSize="10"
@@ -13,12 +12,12 @@
             username="root"
             password=""
             driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://localhost:3306/spis?serverTimezone=UTC"xxxxxxxx
+            url="jdbc:mysql://localhost:3306/hackaton?serverTimezone=UTC"
     />
 
     <Realm
             className="org.apache.catalina.realm.DataSourceRealm"
-            dataSourceName="jdbc/spis"xxxxxx
+            dataSourceName="jdbc/hackaton"
             userTable="user"
             userNameCol="username"
             userCredCol="password"

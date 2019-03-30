@@ -1,14 +1,12 @@
 package model;
 
-import javax.sql.DataSource;
 import java.sql.Date;
 import java.util.Objects;
 
 public class Notification {
     private long idNotification;
-    private String photoPath;
-    private long NotificationType;
-    private String type;
+    private String notificationName;
+    private long notificationType;
     private String description;
     private String localization;
     private long idStatus;
@@ -20,11 +18,10 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(long idNotification, String photoPath, long notificationType, String type, String description, String localization, long idStatus, String statusDescription, int score, Date notificationTime, long idUser) {
+    public Notification(long idNotification, String notificationName, long notificationType, String description, String localization, long idStatus, String statusDescription, int score, Date notificationTime, long idUser) {
         this.idNotification = idNotification;
-        this.photoPath = photoPath;
-        NotificationType = notificationType;
-        this.type = type;
+        this.notificationName = notificationName;
+        this.notificationType = notificationType;
         this.description = description;
         this.localization = localization;
         this.idStatus = idStatus;
@@ -42,28 +39,20 @@ public class Notification {
         this.idNotification = idNotification;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public String getNotificationName() {
+        return notificationName;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setNotificationName(String notificationName) {
+        this.notificationName = notificationName;
     }
 
     public long getNotificationType() {
-        return NotificationType;
+        return notificationType;
     }
 
     public void setNotificationType(long notificationType) {
-        NotificationType = notificationType;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+        this.notificationType = notificationType;
     }
 
     public String getDescription() {
@@ -132,8 +121,7 @@ public class Notification {
                 getIdStatus() == that.getIdStatus() &&
                 getScore() == that.getScore() &&
                 getIdUser() == that.getIdUser() &&
-                Objects.equals(getPhotoPath(), that.getPhotoPath()) &&
-                Objects.equals(getType(), that.getType()) &&
+                Objects.equals(getNotificationName(), that.getNotificationName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getLocalization(), that.getLocalization()) &&
                 Objects.equals(getStatusDescription(), that.getStatusDescription()) &&
@@ -142,16 +130,15 @@ public class Notification {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdNotification(), getPhotoPath(), getNotificationType(), getType(), getDescription(), getLocalization(), getIdStatus(), getStatusDescription(), getScore(), getNotificationTime(), getIdUser());
+        return Objects.hash(getIdNotification(), getNotificationName(), getNotificationType(), getDescription(), getLocalization(), getIdStatus(), getStatusDescription(), getScore(), getNotificationTime(), getIdUser());
     }
 
     @Override
     public String toString() {
         return "Notification{" +
                 "idNotification=" + idNotification +
-                ", photoPath='" + photoPath + '\'' +
-                ", NotificationType=" + NotificationType +
-                ", type='" + type + '\'' +
+                ", notificationName='" + notificationName + '\'' +
+                ", notificationType=" + notificationType +
                 ", description='" + description + '\'' +
                 ", localization='" + localization + '\'' +
                 ", idStatus=" + idStatus +
