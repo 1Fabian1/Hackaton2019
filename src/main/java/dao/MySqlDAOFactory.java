@@ -30,5 +30,10 @@ public class MySqlDAOFactory extends DAOFactory {
         return new NotificationTypeDAOImpl();
     }
 
+    @Override
+    public NotificationStatusDAO getNotificationStatusDAO() {
+        return new NotificationStatusDAOImpl();
+    }
+
 
 }

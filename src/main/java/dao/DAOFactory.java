@@ -11,6 +11,7 @@ public abstract class DAOFactory {
     public abstract CommentDAO getCommentDAO();
     public abstract LikeDAO getLikeDAO();
     public abstract NotificationTypeDAO getNotificationTypeDAO();
+    public abstract NotificationStatusDAO getNotificationStatusDAO();
 
     public static DAOFactory getDAOFactory() {
         DAOFactory factory = null;

@@ -105,9 +105,26 @@ public class NotificationDAOImpl implements NotificationDAO {
         return allNotifications;
     }
 
+
     @Override
-    public Notification addPointInNotification(Notification notification, int score) {
-        return null;
+    public Notification addPointInNotification(Notification notification, int score, long notificationPrimaryKey) {
+        Notification updateNotification = new Notification();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("idzgloszenia", notificationPrimaryKey);
+        paramMap.put("nazwazgloszenia", notification.getNotificationName());
+        paramMap.put("idrodzajezgloszen", notification.getNotificationType());
+        paramMap.put("opiszgloszenia", notification.getDescription());
+        paramMap.put("lokalizacja", notification.getLocalization());
+        paramMap.put("idstatusyzgloszen", notification.getIdStatus());
+        paramMap.put("opisstatusu", notification.getStatusDescription());
+        score = notification.getScore() + 1;
+        paramMap.put("punkty", score);
+        paramMap.put("czaszgloszenia", notification.getNotificationTime());
+        paramMap.put("iduzytkownicy", notification.getIdUser());
+
+        SqlParameterSource parameterSource = new MapSqlParameterSource(paramMap);
+        template.update(UPDATE_NOTIFICATION_POINTS, parameterSource);
+        return updateNotification;
     }
 
     @Override

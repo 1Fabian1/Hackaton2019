@@ -76,4 +76,13 @@ public class NotificationService {
         notificationDAO.setNotificationStatus(idNotificationStatus);
         return notification;
     }
+
+    public Notification addPointInNotification(Notification notification, int score, long notificationPrimaryKey) {
+        Notification resultNotification = new Notification();
+
+        DAOFactory daoFactory = DAOFactory.getDAOFactory();
+        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
+        return resultNotification = notificationDAO.addPointInNotification(notification, score, notificationPrimaryKey);
+
+    }
 }

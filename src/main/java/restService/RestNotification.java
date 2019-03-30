@@ -6,6 +6,7 @@ import model.Notification;
 import modelService.NotificationService;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import javax.annotation.PostConstruct;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -105,6 +106,25 @@ public class RestNotification {
         return Response.ok(gson.toJson(notificationList)).build();
     }
 
+    @POST
+    @Path("/addPointInNotification")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addPointInNotification(String notificationPrimaryKeyJson) {
+        System.out.println("dostałem: " + notificationPrimaryKeyJson);
+        Gson gson = new Gson();
+        NotificationService notificationService = new NotificationService();
+        Notification helperNotification = new Notification();
+        Notification resultNotification = new Notification();
+        int notificationPK, score;
+        notificationPK = Integer.parseInt(notificationPrimaryKeyJson.replaceAll("[\\D]", ""));
+        helperNotification = notificationService.readNotification(notificationPK);
+        score = helperNotification.getScore() + 1;
+        System.out.println("Score after add: " + score);
+        resultNotification = notificationService.addPointInNotification(helperNotification, score, notificationPK);
+
+        return Response.ok(resultNotification).build();
+
+    }
 
     //TODO UNFINISHED METHOD!!!
     @POST

@@ -7,7 +7,7 @@ import java.util.List;
 public interface NotificationDAO extends GenericDAO<Notification, Long> {
 
 
-    Notification addPointInNotification(Notification notification, int score);
+    Notification addPointInNotification(Notification notification, int score, long notificationPrimaryKey);
 
     void setNotificationStatus(long idStatus);
 
@@ -18,5 +18,6 @@ public interface NotificationDAO extends GenericDAO<Notification, Long> {
     List<Notification> readModeratedNotifications();
 
     List<Notification> readAllHotNotifications();
+
 
 }
