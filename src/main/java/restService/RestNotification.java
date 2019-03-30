@@ -22,8 +22,8 @@ public class RestNotification {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNotification(String notificationJson) {
         System.out.println("notificationJson: " + notificationJson);
-
-        Gson gson = new GsonBuilder().setDateFormat("YYYY-MM-DD HH:MM:SS").create();
+        Gson gson = new Gson();
+        //Gson gson = new GsonBuilder().setDateFormat("YYYY-MM-DD HH:MM:SS").create();
 
         Notification notification = new Notification();
         notification = gson.fromJson(notificationJson, Notification.class);

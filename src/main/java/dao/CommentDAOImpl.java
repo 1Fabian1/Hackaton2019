@@ -122,7 +122,7 @@ public class CommentDAOImpl implements CommentDAO {
             resultComment.setIdComment(resultSet.getLong("idKomentarze"));
             resultComment.setCommentContent(resultSet.getString("tresckomentarza"));
             resultComment.setScore(resultSet.getInt("punkty"));
-            resultComment.setAddTime(resultSet.getDate("czasdodania"));
+            resultComment.setAddTime(resultSet.getString("czasdodania"));
             resultComment.setIdNotification(resultSet.getLong("idzgloszenia"));
             resultComment.setIdUser(resultSet.getLong("iduzytkownicy"));
             return resultComment;

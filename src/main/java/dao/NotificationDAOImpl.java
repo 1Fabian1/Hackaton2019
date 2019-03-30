@@ -193,7 +193,7 @@ public class NotificationDAOImpl implements NotificationDAO {
             resultNotification.setIdStatus(resultSet.getLong("idstatusyzgloszen"));
             resultNotification.setStatusDescription(resultSet.getString("opisstatusu"));
             resultNotification.setScore(resultSet.getInt("punkty"));
-            resultNotification.setNotificationTime(resultSet.getDate("czaszgloszenia"));
+            resultNotification.setNotificationTime(resultSet.getString("czaszgloszenia"));
             resultNotification.setIdUser(resultSet.getLong("iduzytkownicy"));
             return resultNotification;
         }

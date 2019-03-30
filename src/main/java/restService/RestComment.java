@@ -19,7 +19,8 @@ public class RestComment {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createComment(String commentJson) {
         System.out.println("commentJson: " + commentJson);
-        Gson gson = new GsonBuilder().setDateFormat("YYYY-MM-DD HH:MM:SS").create();
+        //Gson gson = new GsonBuilder().setDateFormat("YYYY-MM-DD HH:MM:SS").create();
+        Gson gson = new Gson();
         Comment comment = new Comment();
         CommentService commentService = new CommentService();
         comment = gson.fromJson(commentJson, Comment.class);

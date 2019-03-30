@@ -12,13 +12,13 @@ public class Notification {
     private long idStatus;
     private String statusDescription;
     private int score;
-    private Date notificationTime;
+    private String notificationTime;
     private long idUser;
 
     public Notification() {
     }
 
-    public Notification(long idNotification, String notificationName, long notificationType, String description, String localization, long idStatus, String statusDescription, int score, Date notificationTime, long idUser) {
+    public Notification(long idNotification, String notificationName, long notificationType, String description, String localization, long idStatus, String statusDescription, int score, String notificationTime, long idUser) {
         this.idNotification = idNotification;
         this.notificationName = notificationName;
         this.notificationType = notificationType;
@@ -95,11 +95,11 @@ public class Notification {
         this.score = score;
     }
 
-    public Date getNotificationTime() {
+    public String getNotificationTime() {
         return notificationTime;
     }
 
-    public void setNotificationTime(Date notificationTime) {
+    public void setNotificationTime(String notificationTime) {
         this.notificationTime = notificationTime;
     }
 

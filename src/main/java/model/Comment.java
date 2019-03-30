@@ -7,13 +7,13 @@ public class Comment {
     private long idComment;
     private String commentContent;
     private int score;
-    private Date addTime;
+    private String addTime;
     private long idNotification;
     private long idUser;
 
     public Comment(){}
 
-    public Comment(long idComment, String commentContent, int score, Date addTime, long idNotification, long idUser) {
+    public Comment(long idComment, String commentContent, int score, String addTime, long idNotification, long idUser) {
         this.idComment = idComment;
         this.commentContent = commentContent;
         this.score = score;
@@ -46,11 +46,11 @@ public class Comment {
         this.score = score;
     }
 
-    public Date getAddTime() {
+    public String getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(Date addTime) {
+    public void setAddTime(String addTime) {
         this.addTime = addTime;
     }
 
