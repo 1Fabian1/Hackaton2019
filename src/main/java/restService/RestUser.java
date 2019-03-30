@@ -9,6 +9,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
+import java.util.Map;
 
 @Path("/user")
 public class RestUser {
@@ -43,17 +45,13 @@ public class RestUser {
 
     }
 
-    //TODO parse Json to int
     @POST
     @Path("/setUserAnAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setUserAnAdmin(String userJson) {
-        System.out.println("User admin Json: " + userJson);
-        Gson gson = new Gson();
         UserService userService = new UserService();
-
-        //wrong !!!
-        userService.setUserAnAdmin(1);
+        int primaryKey = Integer.parseInt(userJson.replaceAll("[\\D]", ""));
+        userService.setUserAnAdmin(primaryKey);
         return Response.ok().build();
 
     }

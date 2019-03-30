@@ -1,5 +1,7 @@
 package dao;
 
+import model.Comment;
+
 public class MySqlDAOFactory extends DAOFactory {
 
 
@@ -12,4 +14,10 @@ public class MySqlDAOFactory extends DAOFactory {
     public UserDAO getUserDAO() {
         return new UserDAOImpl();
     }
+
+    @Override
+    public CommentDAO getCommentDAO() {
+        return new CommentDAOImpl();
+    }
+
 }

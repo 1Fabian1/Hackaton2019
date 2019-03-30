@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +21,13 @@ public class NotificationDAOImpl implements NotificationDAO {
 
     //TODO fill querries
     private static final String CREATE_NOTIFICATION = "INSERT INTO zgloszenia (idzgloszenia, nazwazgloszenia, idrodzajezgloszen, opiszgloszenia, lokalizacja, idstatusyzgloszen, opisstatusu, punkty, czaszgloszenia, iduzytkownicy) VALUES (:idzgloszenia, :nazwazgloszenia, :idrodzajezgloszen, :opiszgloszenia, :lokalizacja, :idstatusyzgloszen, :opisstatusu, :punkty, :czaszgloszenia, :iduzytkownicy);";
-    private static final String READ_NOTIFICATION = "";
-    private static final String READ_NOTIFICATION_BY_ID = "";
+    private static final String READ_ALL_NOTIFICATIONS = "SELECT * FROM zgloszenia";
+    private static final String READ_NOTIFICATION_BY_ID = "SELECT * FROM hackaton.zgloszenia WHERE idzgloszenia = :idzgloszenia;";
+    private static final String READ_SOLVED = "SELECT * FROM zgloszenia WHERE idstatusyzgloszen = 6;";
+    private static final String READ_BEST_25_SCORED = "SELECT * FROM zgloszenia ORDER BY punkty DESC LIMIT 25;";
     private static final String UPDATE_NOTIFICATION = "";
     private static final String UPDATE_NOTIFICATION_POINTS = "UPDATE zgloszenia SET punkty = :punkty WHERE zgloszenia.idzgloszenia = :idzgloszenia;";
+    private static final String UPDATE_NOTIFICATION_STATUS = "UPDATE zgloszenia SET idstatusyzgloszen = :idstatusyzgloszen WHERE zgloszenia.idzgloszenia = :idzgloszenia;";
     private static final String DELETE_NOTIFICATION = "";
 
     @Autowired
@@ -58,7 +62,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     @Override
     public Notification read(Long primaryKey) {
         Notification resultNotification = new Notification();
-        SqlParameterSource parameterSource = new MapSqlParameterSource("idZgloszenia", primaryKey);
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idzgloszenia", primaryKey);
         resultNotification = template.queryForObject(READ_NOTIFICATION_BY_ID, parameterSource, new NotificationRowMapper());
         return resultNotification;
     }
@@ -90,12 +94,47 @@ public class NotificationDAOImpl implements NotificationDAO {
 
     @Override
     public List<Notification> GetAll() {
-        return null;
+        List<Notification> allNotifications = new ArrayList<>();
+        try {
+            allNotifications = template.query(READ_ALL_NOTIFICATIONS, new NotificationRowMapper());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return allNotifications;
     }
 
     @Override
     public Notification addPointInNotification(Notification notification, int score) {
         return null;
+    }
+
+    @Override
+    public void setNotificationStatus(long idStatus) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idstatusyzgloszen", idStatus);
+        template.update(UPDATE_NOTIFICATION_STATUS, parameterSource);
+
+    }
+
+    @Override
+    public List<Notification> readSolvedNotifications() {
+        List<Notification> allNotifications = new ArrayList<>();
+        try {
+            allNotifications = template.query(READ_SOLVED, new NotificationRowMapper());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return allNotifications;
+    }
+
+    @Override
+    public List<Notification> readBest25Scored() {
+        List<Notification> allNotifications = new ArrayList<>();
+        try {
+            allNotifications = template.query(READ_BEST_25_SCORED, new NotificationRowMapper());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return allNotifications;
     }
 
 

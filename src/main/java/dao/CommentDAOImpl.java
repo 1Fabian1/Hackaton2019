@@ -5,16 +5,26 @@ import model.Comment;
 import model.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.ws.rs.PUT;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommentDAOImpl implements CommentDAO {
 
     private static final String CREATE_COMMENT = "INSERT INTO komentarze (idkomentarze, tresckomentarza, punkty, czasdodania, idzgloszenia, iduzytkownicy) VALUES (null, :tresckomentarza, '0', :czasdodania, :idzgloszenia, :iduzytkownicy);";
+    private static final String READ_FROM_OLDEST_BY_ID = "SELECT * FROM komentarze WHERE idzgloszenia = :idzgloszenia ORDER BY czasdodania;";
+    private static final String READ_FROM_NEWEST_BY_ID = "SELECT * FROM komentarze WHERE idzgloszenia = :idzgloszenia ORDER BY czasdodania DESC;";
+    private static final String READ_FROM_BEST_BY_ID = "SELECT * FROM komentarze WHERE idzgloszenia = :idzgloszenia ORDER BY punkty;";
     private static final String READCOMMENT = "";
     private static final String UPDATE_COMMENT = "";
     private static final String DELETE_COMMENT = "";
@@ -28,8 +38,20 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public Comment create(Comment newObject) {
-        return null;
+    public Comment create(Comment comment) {
+        Comment resultComment = new Comment();
+        KeyHolder holder = new GeneratedKeyHolder();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("idkomentarze", comment.getIdComment());
+        paramMap.put("tresckomentarza", comment.getCommentContent());
+        paramMap.put("punkty", comment.getScore());
+        paramMap.put("czasdodania", comment.getAddTime());
+        paramMap.put("idzgloszenia", comment.getIdNotification());
+        paramMap.put("iduzytkownicy", comment.getIdUser());
+
+        SqlParameterSource parameterSource = new MapSqlParameterSource(paramMap);
+        template.update(CREATE_COMMENT, parameterSource, holder);
+        return resultComment;
     }
 
     @Override
@@ -52,11 +74,40 @@ public class CommentDAOImpl implements CommentDAO {
         return null;
     }
 
-    private class CommentRowMapper implements RowMapper<Comment>{
+    @Override
+    public List<Comment> readCommentsFromOldest(long idNotification) {
+        List<Comment> commentList = new ArrayList<>();
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idzgloszenia", idNotification);
+        commentList = template.query(READ_FROM_OLDEST_BY_ID, parameterSource, new CommentRowMapper());
+        return commentList;
+    }
+
+    @Override
+    public List<Comment> readCommentsFromNewest(long idNotification) {
+        List<Comment> commentList = new ArrayList<>();
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idzgloszenia", idNotification);
+        commentList = template.query(READ_FROM_NEWEST_BY_ID, parameterSource, new CommentRowMapper());
+        return commentList;
+    }
+
+    @Override
+    public List<Comment> readCommentsByBest(long idNotification) {
+        List<Comment> commentList = new ArrayList<>();
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idzgloszenia", idNotification);
+        commentList = template.query(READ_FROM_BEST_BY_ID, parameterSource, new CommentRowMapper());
+        return commentList;
+    }
+
+    private class CommentRowMapper implements RowMapper<Comment> {
         @Override
         public Comment mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             Comment resultComment = new Comment();
-
+            resultComment.setIdComment(resultSet.getLong("idKomentarze"));
+            resultComment.setCommentContent(resultSet.getString("tresckomentarza"));
+            resultComment.setScore(resultSet.getInt("punkty"));
+            resultComment.setAddTime(resultSet.getDate("czasdodania"));
+            resultComment.setIdNotification(resultSet.getLong("idzgloszenia"));
+            resultComment.setIdUser(resultSet.getLong("iduzytkownicy"));
             return resultComment;
         }
     }
