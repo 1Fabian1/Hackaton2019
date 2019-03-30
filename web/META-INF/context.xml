@@ -12,7 +12,7 @@
             username="root"
             password=""
             driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://localhost:3306/hackaton?serverTimezone=UTC"
+            url="jdbc:mysql://localhost:3306/hackaton"
     />
 
     <Realm

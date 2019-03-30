@@ -67,4 +67,17 @@ public class RestComment {
         return Response.ok(jsonResponse).build();
     }
 
+    @POST
+    @Path("/updatePointsById/{idComment}/{score}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePointsById(@PathParam("idComment") long idComment, @PathParam("score") int score, String commentJson) {
+        Gson gson = new Gson();
+        Comment comment = new Comment();
+        Comment resultComment = new Comment();
+        CommentService commentService = new CommentService();
+        comment = gson.fromJson(commentJson, Comment.class);
+        resultComment = commentService.updatePointsById(comment, idComment, score);
+        return Response.ok().build();
+    }
+
 }

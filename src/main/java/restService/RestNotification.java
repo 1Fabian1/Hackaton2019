@@ -83,6 +83,28 @@ public class RestNotification {
         return Response.ok(gson.toJson(notificationList)).build();
     }
 
+    @GET
+    @Path("/readModeratedNotificationsBe_AwareToMakeAdditionaSelect")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response readModeratedNotifications() {
+        Gson gson = new Gson();
+        NotificationService notificationService = new NotificationService();
+        List<Notification> notificationList = new ArrayList<>();
+        notificationList = notificationService.readModeratedNotifications();
+        return Response.ok(gson.toJson(notificationList)).build();
+    }
+
+    @GET
+    @Path("/readAllHotNotifications")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response readAllHotNotifications() {
+        Gson gson = new Gson();
+        NotificationService notificationService = new NotificationService();
+        List<Notification> notificationList = new ArrayList<>();
+        notificationList = notificationService.readAllHotNotifications();
+        return Response.ok(gson.toJson(notificationList)).build();
+    }
+
 
     //TODO UNFINISHED METHOD!!!
     @POST

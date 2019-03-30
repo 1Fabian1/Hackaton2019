@@ -20,4 +20,15 @@ public class MySqlDAOFactory extends DAOFactory {
         return new CommentDAOImpl();
     }
 
+    @Override
+    public LikeDAO getLikeDAO() {
+        return new LikeDAOImpl();
+    }
+
+    @Override
+    public NotificationTypeDAO getNotificationTypeDAO() {
+        return new NotificationTypeDAOImpl();
+    }
+
+
 }

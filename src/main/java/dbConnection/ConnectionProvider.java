@@ -20,8 +20,8 @@ public enum ConnectionProvider {
     }
 
 
-    public static DataSource getDataSource(){
-        if(dataSource == null){
+    public static DataSource getDataSource() {
+        if (dataSource == null) {
             try {
                 Context initialContext = new InitialContext();
                 Context envContext = (Context) initialContext.lookup("java:comp/env");

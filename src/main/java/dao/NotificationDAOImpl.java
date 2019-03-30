@@ -25,6 +25,8 @@ public class NotificationDAOImpl implements NotificationDAO {
     private static final String READ_NOTIFICATION_BY_ID = "SELECT * FROM hackaton.zgloszenia WHERE idzgloszenia = :idzgloszenia;";
     private static final String READ_SOLVED = "SELECT * FROM zgloszenia WHERE idstatusyzgloszen = 6;";
     private static final String READ_BEST_25_SCORED = "SELECT * FROM zgloszenia ORDER BY punkty DESC LIMIT 25;";
+    private static final String READ_MODERATED = "SELECT * FROM zgloszenia WHERE idstatusyzgloszen = 1 OR idstatusyzgloszen = 4 OR idstatusyzgloszen = 5;";
+    private static final String READ_ALL_HOT = "SELECT idzgloszenia FROM goracezgloszenia;";
     private static final String UPDATE_NOTIFICATION = "";
     private static final String UPDATE_NOTIFICATION_POINTS = "UPDATE zgloszenia SET punkty = :punkty WHERE zgloszenia.idzgloszenia = :idzgloszenia;";
     private static final String UPDATE_NOTIFICATION_STATUS = "UPDATE zgloszenia SET idstatusyzgloszen = :idstatusyzgloszen WHERE zgloszenia.idzgloszenia = :idzgloszenia;";
@@ -135,6 +137,29 @@ public class NotificationDAOImpl implements NotificationDAO {
             e.printStackTrace();
         }
         return allNotifications;
+    }
+
+    @Override
+    public List<Notification> readModeratedNotifications() {
+        List<Notification> notificationList = new ArrayList<>();
+        try {
+            notificationList = template.query(READ_MODERATED, new NotificationRowMapper());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return notificationList;
+    }
+
+    @Override
+    public List<Notification> readAllHotNotifications() {
+        List<Notification> notificationList = new ArrayList<>();
+        try {
+            notificationList = template.query(READ_ALL_HOT, new NotificationRowMapper());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return notificationList;
+
     }
 
 

@@ -4,8 +4,6 @@ import dao.DAOFactory;
 import dao.NotificationDAO;
 import model.Notification;
 
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.ws.rs.PUT;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -53,6 +51,23 @@ public class NotificationService {
         notificationList = notificationDAO.readBest25Scored();
         return notificationList;
     }
+
+    public List<Notification> readModeratedNotifications() {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory();
+        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
+        List<Notification> notificationList = new ArrayList<>();
+        notificationList = notificationDAO.readModeratedNotifications();
+        return notificationList;
+    }
+
+    public List<Notification> readAllHotNotifications() {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory();
+        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
+        List<Notification> notificationList = new ArrayList<>();
+        notificationList = notificationDAO.readAllHotNotifications();
+        return notificationList;
+    }
+
 
     public Notification updateNotificationStatus(long idNotificationStatus) {
         Notification notification = new Notification();

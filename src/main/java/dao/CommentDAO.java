@@ -11,4 +11,8 @@ public interface CommentDAO extends GenericDAO<Comment, Long> {
     List<Comment> readCommentsFromNewest(long idNotification);
 
     List<Comment> readCommentsByBest(long idNotification);
+
+    Comment updatePointsById(Comment comment, long idComment, int score);
+
+
 }

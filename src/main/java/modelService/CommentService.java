@@ -37,5 +37,14 @@ public class CommentService {
         return commentList;
     }
 
+    public Comment updatePointsById(Comment comment, long idComment, int score) {
+        Comment updateComment = new Comment();
+        DAOFactory daoFactory = DAOFactory.getDAOFactory();
+        CommentDAO commentDAO = daoFactory.getCommentDAO();
+        commentDAO.updatePointsById(comment, idComment, score);
+        return updateComment;
+
+    }
+
 
 }

@@ -15,4 +15,8 @@ public interface NotificationDAO extends GenericDAO<Notification, Long> {
 
     List<Notification> readBest25Scored();
 
+    List<Notification> readModeratedNotifications();
+
+    List<Notification> readAllHotNotifications();
+
 }

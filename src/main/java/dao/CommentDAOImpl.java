@@ -25,6 +25,7 @@ public class CommentDAOImpl implements CommentDAO {
     private static final String READ_FROM_OLDEST_BY_ID = "SELECT * FROM komentarze WHERE idzgloszenia = :idzgloszenia ORDER BY czasdodania;";
     private static final String READ_FROM_NEWEST_BY_ID = "SELECT * FROM komentarze WHERE idzgloszenia = :idzgloszenia ORDER BY czasdodania DESC;";
     private static final String READ_FROM_BEST_BY_ID = "SELECT * FROM komentarze WHERE idzgloszenia = :idzgloszenia ORDER BY punkty;";
+    private static final String UPDATE_POINTS = "UPDATE komentarze SET punkty = :punkty WHERE komentarze.idkomentarze = :idkomentarze ;";
     private static final String READCOMMENT = "";
     private static final String UPDATE_COMMENT = "";
     private static final String DELETE_COMMENT = "";
@@ -96,6 +97,22 @@ public class CommentDAOImpl implements CommentDAO {
         SqlParameterSource parameterSource = new MapSqlParameterSource("idzgloszenia", idNotification);
         commentList = template.query(READ_FROM_BEST_BY_ID, parameterSource, new CommentRowMapper());
         return commentList;
+    }
+
+    @Override
+    public Comment updatePointsById(Comment comment, long idComment, int score) {
+        Comment updatedComment = new Comment();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("idkomentarze", idComment);
+        paramMap.put("tresckomentarza", comment.getCommentContent());
+        paramMap.put("punkty", score);
+        paramMap.put("czasdodania", comment.getAddTime());
+        paramMap.put("idzgloszenia", comment.getIdNotification());
+        paramMap.put("iduzytkownicy", comment.getIdUser());
+
+        SqlParameterSource parameterSource = new MapSqlParameterSource(paramMap);
+        template.update(UPDATE_POINTS, parameterSource);
+        return updatedComment;
     }
 
     private class CommentRowMapper implements RowMapper<Comment> {

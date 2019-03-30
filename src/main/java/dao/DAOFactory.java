@@ -9,6 +9,8 @@ public abstract class DAOFactory {
     public abstract NotificationDAO getNotificationDAO();
     public abstract UserDAO getUserDAO();
     public abstract CommentDAO getCommentDAO();
+    public abstract LikeDAO getLikeDAO();
+    public abstract NotificationTypeDAO getNotificationTypeDAO();
 
     public static DAOFactory getDAOFactory() {
         DAOFactory factory = null;
